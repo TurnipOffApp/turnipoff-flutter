@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 class MoviePreviewData {
   int? page;
   List<Results>? results;
@@ -31,7 +33,7 @@ class MoviePreviewData {
   }
 }
 
-class Results {
+class Results extends Equatable {
   bool? adult;
   String? backdropPath;
   List<int>? genreIds;
@@ -49,19 +51,19 @@ class Results {
 
   Results(
       {this.adult,
-        this.backdropPath,
-        this.genreIds,
-        this.id,
-        this.originalLanguage,
-        this.originalTitle,
-        this.overview,
-        this.popularity,
-        this.posterPath,
-        this.releaseDate,
-        this.title,
-        this.video,
-        this.voteAverage,
-        this.voteCount});
+      this.backdropPath,
+      this.genreIds,
+      this.id,
+      this.originalLanguage,
+      this.originalTitle,
+      this.overview,
+      this.popularity,
+      this.posterPath,
+      this.releaseDate,
+      this.title,
+      this.video,
+      this.voteAverage,
+      this.voteCount});
 
   Results.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
@@ -71,7 +73,7 @@ class Results {
     originalLanguage = json['original_language'];
     originalTitle = json['original_title'];
     overview = json['overview'];
-    if(json['popularity'] is int) {
+    if (json['popularity'] is int) {
       popularity = (json['popularity'] as int).toDouble();
     } else {
       popularity = json['popularity'];
@@ -80,7 +82,7 @@ class Results {
     releaseDate = json['release_date'];
     title = json['title'];
     video = json['video'];
-    if(json['vote_average'] is int) {
+    if (json['vote_average'] is int) {
       voteAverage = (json['vote_average'] as int).toDouble();
     } else {
       voteAverage = json['vote_average'];
@@ -106,4 +108,22 @@ class Results {
     data['vote_count'] = voteCount;
     return data;
   }
+
+  @override
+  List<Object?> get props => [
+        adult,
+        backdropPath,
+        genreIds,
+        id,
+        originalLanguage,
+        originalTitle,
+        overview,
+        popularity,
+        posterPath,
+        releaseDate,
+        title,
+        video,
+        voteAverage,
+        voteCount
+      ];
 }

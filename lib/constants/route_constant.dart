@@ -1,4 +1,4 @@
 const homeRoute = '/';
 const actor = '/actor';
-const movie = '/movie';
+const moviePath = '/movie';
 

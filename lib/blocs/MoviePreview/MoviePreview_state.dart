@@ -1,34 +1,45 @@
+import 'package:equatable/equatable.dart';
+import '../../models/MoviePreviewData.dart';
 
-import 'package:turnipoff/blocs/MoviePreview/MoviePreview.dart';
-import 'package:turnipoff/models/MoviePreviewData.dart';
+enum MoviePreviewStatus { initial, success, failure }
 
-abstract class MoviePreviewState {}
+class MoviePreviewState extends Equatable {
+  const MoviePreviewState({
+    this.status = MoviePreviewStatus.initial,
+    this.hasReachedMax = false,
+    this.page = 0,
+    this.results = const <Results>[],
+    this.totalPages = 0,
+    this.totalResults = 0
+  });
 
-/*
-class MoviePreviewInitialState extends MoviePreviewState {
-  PreviewType? type;
+  final MoviePreviewStatus status;
+  final bool hasReachedMax;
+  final int page;
+  final List<Results> results;
+  final int totalPages;
+  final int totalResults;
 
-  MoviePreviewInitialState({this.type});
-
-  MoviePreviewInitialState copyWith({PreviewType? type}) {
-    return MoviePreviewInitialState(type: type ?? this.type);
+  MoviePreviewState copyWith({
+    MoviePreviewStatus? status,
+    MoviePreviewData? moviePreviewData,
+    bool? hasReachedMax,
+  }) {
+    return MoviePreviewState(
+      status: status ?? this.status,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+      page: moviePreviewData?.page ?? page,
+      results: moviePreviewData?.results ?? results,
+      totalPages: moviePreviewData?.totalPages ?? totalPages,
+      totalResults: moviePreviewData?.totalResults ?? totalResults
+    );
   }
-}
- */
 
-class MoviePreviewLoadInProgress extends MoviePreviewState {
-
-
-}
-
-class MoviePreviewLoaded extends MoviePreviewState {
-  MoviePreviewData? data;
-
-  MoviePreviewLoaded({this.data});
-
-  MoviePreviewLoaded copyWith({MoviePreviewData? data}) {
-    return MoviePreviewLoaded(data: data ?? this.data);
+  @override
+  String toString() {
+    return '''MoviePreviewState { status: $status, hasReachedMax: $hasReachedMax, posts: ${results.length} }''';
   }
-}
 
-class MoviePreviewLoadingFailure extends MoviePreviewState {}
+  @override
+  List<Object> get props => [status, results, hasReachedMax];
+}

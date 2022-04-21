@@ -5,13 +5,13 @@ import 'package:turnipoff/constants/network_constants.dart';
 import '../models/MoviePreviewData.dart';
 
 abstract class MoviePreviewRepository {
-  Future<MoviePreviewData> getActionPreview();
+  Future<MoviePreviewData> getActionPreview(int page);
 
-  Future<MoviePreviewData> getComedyPreview();
+  Future<MoviePreviewData> getComedyPreview(int page);
 
-  Future<MoviePreviewData> getEightysPreview();
+  Future<MoviePreviewData> getEightysPreview(int page);
 
-  Future<MoviePreviewData> getNineteensPreview();
+  Future<MoviePreviewData> getNineteensPreview(int page);
 }
 
 class MoviePreviewRepositoryImpl extends MoviePreviewRepository {
@@ -24,12 +24,13 @@ class MoviePreviewRepositoryImpl extends MoviePreviewRepository {
       NetworkConstants.ADULT_FALSE;
 
   @override
-  Future<MoviePreviewData> getActionPreview() async {
+  Future<MoviePreviewData> getActionPreview(int page) async {
     var url = Uri.parse(base +
         NetworkConstants.PREVIEW_ACTION_QUERY +
         NetworkConstants.AND_LOWEST_FIRST +
         NetworkConstants.AND_AVERAGE_ONE +
-        NetworkConstants.AND_PAGE_ONE);
+        NetworkConstants.AND_PAGE +
+        page.toString());
     var response = await http.get(url);
 
     var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
@@ -37,12 +38,13 @@ class MoviePreviewRepositoryImpl extends MoviePreviewRepository {
   }
 
   @override
-  Future<MoviePreviewData> getComedyPreview() async {
+  Future<MoviePreviewData> getComedyPreview(int page) async {
     var url = Uri.parse(base +
         NetworkConstants.PREVIEW_COMEDY_QUERY +
         NetworkConstants.AND_LOWEST_FIRST +
         NetworkConstants.AND_AVERAGE_ONE +
-        NetworkConstants.AND_PAGE_ONE);
+        NetworkConstants.AND_PAGE +
+        page.toString());
     var response = await http.get(url);
 
     var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
@@ -50,12 +52,13 @@ class MoviePreviewRepositoryImpl extends MoviePreviewRepository {
   }
 
   @override
-  Future<MoviePreviewData> getEightysPreview() async {
+  Future<MoviePreviewData> getEightysPreview(int page) async {
     var url = Uri.parse(base +
         NetworkConstants.PREVIEW_EIGHTYS_QUERY +
         NetworkConstants.AND_LOWEST_FIRST +
         NetworkConstants.AND_AVERAGE_ONE +
-        NetworkConstants.AND_PAGE_ONE);
+        NetworkConstants.AND_PAGE +
+        page.toString());
     var response = await http.get(url);
 
     var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
@@ -63,12 +66,13 @@ class MoviePreviewRepositoryImpl extends MoviePreviewRepository {
   }
 
   @override
-  Future<MoviePreviewData> getNineteensPreview() async {
+  Future<MoviePreviewData> getNineteensPreview(int page) async {
     var url = Uri.parse(base +
         NetworkConstants.PREVIEW_NINETEENS_QUERY +
         NetworkConstants.AND_LOWEST_FIRST +
         NetworkConstants.AND_AVERAGE_ONE +
-        NetworkConstants.AND_PAGE_ONE);
+        NetworkConstants.AND_PAGE +
+        page.toString());
     var response = await http.get(url);
 
     var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
