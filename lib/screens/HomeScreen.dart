@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           .add(MoviePreviewFetched(type: type));
                     }
                     return index >= state.results.length
-                        ? CircularProgressIndicator()
+                        ? const Center(child: CircularProgressIndicator())
                         : buildListItem(state.results[index]);
                   },
                   itemCount: state.hasReachedMax

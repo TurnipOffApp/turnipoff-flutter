@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:turnipoff/blocs/Movie/Movie_event.dart';
 import 'package:turnipoff/blocs/Movie/Movie_state.dart';
 import 'package:turnipoff/models/MovieData.dart';
 import 'package:turnipoff/repositories/MovieRepositories.dart';
+
+import '../../models/MovieCreditsData.dart';
 
 class MovieBloc extends Bloc<MovieEvent, MovieState> {
   final MovieRepositoryImpl _movieRepository;
@@ -10,6 +14,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
   MovieBloc(this._movieRepository)
       : super(MovieLoadInProgress()) {
     on<LoadMovie>(_onLoadMovie);
+    on<LoadMovieCredits>(_onLoadMovieCredits);
     on<LoadingMovieFailed>(_onLoadingInformationFailed);
   }
 
@@ -28,4 +33,12 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     emit(MovieLoadingFailure());
   }
 
+  void _onLoadMovieCredits(LoadMovieCredits event, Emitter<MovieState> emit) async {
+    try {
+      MovieCreditsData data = await _movieRepository.getMovieCredits(event.id);
+      emit((MovieCreditsLoaded()).copyWith(data: data));
+    } catch (_) {
+      add(LoadingMovieCreditsFailed());
+    }
+  }
 }

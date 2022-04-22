@@ -8,6 +8,7 @@ class NetworkConstants {
   static const LANGUAGE_FR = "&language=fr-FR";
   static const REGION_FR = "&region=FR";
   static const MOVIE_PATH = "/movie/";
+  static const MOVIE_CREDITS_PATH = "/credits";
   static const ACTOR_PATH = "/person";
   static const MOVIE_PREVIEW_PATH = "/discover/movie";
   static const TRENDS_PATH = "/trending/";
