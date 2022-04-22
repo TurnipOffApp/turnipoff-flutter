@@ -12,6 +12,8 @@ import '../constants/route_constant.dart';
 import '../main.dart';
 import '../repositories/MovieRepositories.dart';
 import '../widgets/CustomLoader.dart';
+import '../widgets/PosterFormatImg.dart';
+import '../widgets/SeparatorWidget.dart';
 
 class MovieScreen extends StatefulWidget {
   const MovieScreen({Key? key, required this.id}) : super(key: key);
@@ -44,32 +46,20 @@ class _MovieScreenState extends State<MovieScreen> {
     return ListView(
       children: [
         _buildTopScreenImg(state),
-        _buildSeparator(),
+        SeparatorWidget(context: context),
         _buildMovieInfo(state),
-        _buildSeparator(),
+        SeparatorWidget(context: context),
         _buildSynopsys(state),
-        _buildSeparator(),
+        SeparatorWidget(context: context),
         _buildCastAndCrew(state),
       ],
-    );
-  }
-
-  Widget _buildSeparator() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: 1,
-        child:
-            const DecoratedBox(decoration: BoxDecoration(color: Colors.white)),
-      ),
     );
   }
 
   Stack _buildTopScreenImg(MovieLoaded state) {
     return Stack(
       alignment: Alignment.bottomLeft,
-      children: [backdropImg(state), posterImg(state)],
+      children: [backdropImg(state), PosterFormatImg(path: state.data?.posterPath)],
     );
   }
 
@@ -87,28 +77,6 @@ class _MovieScreenState extends State<MovieScreen> {
                         (state.data!.backdropPath!))),
           )
         : Container();
-  }
-
-  Widget posterImg(MovieLoaded state) {
-    return state.data?.posterPath != null
-        ? Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: FadeInImage.assetNetwork(
-                placeholder: 'assets/images/img_placeholder.png',
-                image:
-                    NetworkConstants.BASE_IMAGE_URL + (state.data!.posterPath!),
-                height: 132,
-                width: 88,
-              ),
-            ),
-          )
-        : Image.asset(
-            'assets/images/img_placeholder.png',
-            height: 132,
-            width: 88,
-          );
   }
 
   /// Display score, title, releaseDate, and productionCountries
@@ -192,7 +160,6 @@ class _MovieScreenState extends State<MovieScreen> {
           builder: (context, state) {
             return (state is MovieCreditsLoaded)
                 ? Container(
-                    margin: const EdgeInsets.all(16),
                     child: Column(
                       children: [
                         Text(
@@ -299,6 +266,7 @@ class _MovieScreenState extends State<MovieScreen> {
               ));
   }
 }
+
 
 extension<T> on List<T> {
   T? get firstOrNull => isEmpty ? null : first;

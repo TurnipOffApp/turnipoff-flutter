@@ -99,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
             switch (state.status) {
               case MoviePreviewStatus.success:
                 if (state.results.isEmpty) {
-                  return const Center(child: Text('no posts'));
+                  return const Center(child: Text('no movie'));
                 }
                 return ListView.builder(
                   scrollDirection: Axis.horizontal,
@@ -128,24 +128,27 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildListItem(Results movie) {
-    return GestureDetector(
-      onTap: () {
-        navigatorKey.currentState
-            ?.pushNamed(moviePath, arguments: movie.id.toString());
-      },
-      child: ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
-          child: movie.posterPath != null
-              ? FadeInImage.assetNetwork(
-                  height: 132,
-                  width: 88,
-                  placeholder: 'assets/images/img_placeholder.png',
-                  image: NetworkConstants.BASE_IMAGE_URL + (movie.posterPath!))
-              : Image.asset(
-                  'assets/images/img_placeholder.png',
-                  height: 132,
-                  width: 88,
-                )),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+      child: GestureDetector(
+        onTap: () {
+          navigatorKey.currentState
+              ?.pushNamed(moviePath, arguments: movie.id.toString());
+        },
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(8.0),
+            child: movie.posterPath != null
+                ? FadeInImage.assetNetwork(
+                    height: 132,
+                    width: 88,
+                    placeholder: 'assets/images/img_placeholder.png',
+                    image: NetworkConstants.BASE_IMAGE_URL + (movie.posterPath!))
+                : Image.asset(
+                    'assets/images/img_placeholder.png',
+                    height: 132,
+                    width: 88,
+                  )),
+      ),
     );
   }
 

@@ -9,11 +9,11 @@ class ActorBloc extends Bloc<ActorEvent, ActorState> {
 
   ActorBloc(this._ActorRepository)
       : super(ActorLoadInProgress()) {
-    on<LoadActor>(_onLoadBoxInfo);
+    on<LoadActor>(onLoadActor);
     on<LoadingActorFailed>(_onLoadingInformationFailed);
   }
 
-  void _onLoadBoxInfo(
+  void onLoadActor(
       LoadActor event, Emitter<ActorState> emit) async {
     try {
       ActorData data = await _ActorRepository.getActor(event.id);

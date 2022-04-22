@@ -9,7 +9,7 @@ class NetworkConstants {
   static const REGION_FR = "&region=FR";
   static const MOVIE_PATH = "/movie/";
   static const MOVIE_CREDITS_PATH = "/credits";
-  static const ACTOR_PATH = "/person";
+  static const ACTOR_PATH = "/person/";
   static const MOVIE_PREVIEW_PATH = "/discover/movie";
   static const TRENDS_PATH = "/trending/";
   static const TRENDS_MOVIE_WEEK_PATH = "/trending/movie/week";
@@ -20,7 +20,7 @@ class NetworkConstants {
   static const PREVIEW_EIGHTYS_QUERY = "&primary_release_date.gte=1980-01-01&primary_release_date.lte=1989-12-31";
   static const PREVIEW_NINETEENS_QUERY = "&primary_release_date.gte=1991-01-01&primary_release_date.lte=1999-12-31";
   static const AND_LOWEST_FIRST ="&sort_by=vote_average.asc";
-  static const AND_AVERAGE_ONE ="&voteAverage=1";
+  static const AND_AVERAGE_ONE ="&vote_average.gte=1";
   static const AND_PAGE ="&page=";
   static const AND_MOVIE_ID ="&movie_id=";
 }
