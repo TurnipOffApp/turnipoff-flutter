@@ -61,6 +61,8 @@ class MoviePreviewBloc extends Bloc<MoviePreviewEvent, MoviePreviewState> {
       [int page = 1]) async {
     var repo = MoviePreviewRepositoryImpl();
     switch (type) {
+      case PreviewType.CUSTOM_TRENDS:
+        return repo.getCustomTrends();
       case PreviewType.ACTION:
         return repo.getActionPreview(page);
       case PreviewType.COMEDY:

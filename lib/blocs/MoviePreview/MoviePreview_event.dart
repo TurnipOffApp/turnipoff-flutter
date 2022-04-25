@@ -11,8 +11,8 @@ class MoviePreviewFetched extends MoviePreviewEvent {
   MoviePreviewFetched({required PreviewType type}) : super(type: type);
 }
 
-
 enum PreviewType {
+  CUSTOM_TRENDS,
   ACTION,
   COMEDY,
   EIGHTYS,

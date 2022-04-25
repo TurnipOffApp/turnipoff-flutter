@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:turnipoff/screens/ActorScreen.dart';
+import 'package:turnipoff/widgets/PosterImage.dart';
 
 import '../blocs/Movie/Movie_bloc.dart';
 import '../blocs/Movie/Movie_event.dart';
@@ -77,7 +78,7 @@ class _MovieScreenState extends State<MovieScreen> {
                     height: 180,
                     width: MediaQuery.of(context).size.width,
                     fit: BoxFit.fitWidth,
-                    placeholder: 'assets/images/img_placeholder.png',
+                    placeholder: 'assets/images/img_placeholder.jpeg',
                     image: NetworkConstants.LARGE_IMAGE_URL +
                         (state.data!.backdropPath!))),
           )
@@ -260,17 +261,7 @@ class _MovieScreenState extends State<MovieScreen> {
   ClipRRect _getPersonImg(String? path) {
     return ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
-        child: path != null
-            ? FadeInImage.assetNetwork(
-                height: 132,
-                width: 88,
-                placeholder: 'assets/images/img_placeholder.png',
-                image: NetworkConstants.BASE_IMAGE_URL + (path))
-            : Image.asset(
-                'assets/images/img_placeholder.png',
-                height: 132,
-                width: 88,
-              ));
+        child: PosterImage(url: path));
   }
 }
 

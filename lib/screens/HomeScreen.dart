@@ -4,11 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:turnipoff/blocs/MoviePreview/MoviePreview.dart';
-import 'package:turnipoff/blocs/Trends/trends.dart';
-import 'package:turnipoff/constants/network_constants.dart';
 import 'package:turnipoff/models/MoviePreviewData.dart';
-import 'package:turnipoff/repositories/TrendsRepositories.dart';
+import 'package:turnipoff/repositories/MovieRepositories.dart';
 import 'package:turnipoff/widgets/CustomLoader.dart';
+import 'package:turnipoff/widgets/PosterImage.dart';
+
 import '../constants/route_constant.dart';
 import '../main.dart';
 
@@ -51,14 +51,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget getTrendingMovies() {
     final PageController controller = PageController();
-    final TrendsRepositoryImpl _repo = TrendsRepositoryImpl();
+    final MovieRepositoryImpl _repo = MovieRepositoryImpl();
     return SizedBox(
       height: 200,
       child: BlocProvider(
-        create: (context) => TrendsBloc(_repo)..add(LoadTrends()),
-        child: BlocBuilder<TrendsBloc, TrendsState>(
+        create: (context) => MoviePreviewBloc()
+          ..add(MoviePreviewFetched(type: PreviewType.CUSTOM_TRENDS)),
+        child: BlocBuilder<MoviePreviewBloc, MoviePreviewState>(
           builder: (context, state) {
-            return (state is TrendsLoaded)
+            return (state.status == MoviePreviewStatus.success)
                 ? PageView(
                     controller: controller,
                     children: _trends(state),
@@ -71,24 +72,25 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  List<Center> _trends(TrendsLoaded state) {
-    return state.data?.results
-            ?.sublist(0, 7)
+  List<Center> _trends(MoviePreviewState state) {
+    return state.results
+            .sublist(0, 7)
             .toList()
-            .map((e) => Center(
+            .map((movie) => Center(
                     child: GestureDetector(
                   onTap: () {
                     navigatorKey.currentState
-                        ?.pushNamed(moviePath, arguments: e.id.toString());
+                        ?.pushNamed(moviePath, arguments: movie.id.toString());
                   },
-                  child: Image.network(
-                      NetworkConstants.BASE_IMAGE_URL + (e.posterPath ?? "")),
+                  child: PosterImage(
+                      url: movie.posterPath, height: 198, width: 132),
                 )))
-            .toList() ??
-        [];
+            .toList();
   }
 
   Widget getMovies(PreviewType type) {
+    Platform.localeName;
+    Platform.
     return SizedBox(
       height: 120,
       child: BlocProvider(
@@ -119,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
               case MoviePreviewStatus.failure:
                 return const Center(child: Text('failed to fetch movies'));
               default:
-                  return const Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
             }
           },
         ),
@@ -129,58 +131,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget buildListItem(Results movie) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-      child: GestureDetector(
-        onTap: () {
-          navigatorKey.currentState
-              ?.pushNamed(moviePath, arguments: movie.id.toString());
-        },
-        child: ClipRRect(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: GestureDetector(
+          onTap: () {
+            navigatorKey.currentState
+                ?.pushNamed(moviePath, arguments: movie.id.toString());
+          },
+          child: ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
-            child: movie.posterPath != null
-                ? FadeInImage.assetNetwork(
-                    height: 132,
-                    width: 88,
-                    placeholder: 'assets/images/img_placeholder.png',
-                    image: NetworkConstants.BASE_IMAGE_URL + (movie.posterPath!))
-                : Image.asset(
-                    'assets/images/img_placeholder.png',
-                    height: 132,
-                    width: 88,
-                  )),
-      ),
-    );
+            child: PosterImage(url: movie.posterPath),
+          ),
+        ));
   }
 
-/*
-  List<Widget> _movies(MoviePreviewLoaded state) {
-    return state.data?.results
-            ?.sublist(0, 4)
-            .toList()
-            .map((e) => GestureDetector(
-                  onTap: () {
-                    navigatorKey.currentState
-                        ?.pushNamed(movie, arguments: e.id.toString());
-                  },
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: e.posterPath != null
-                          ? FadeInImage.assetNetwork(
-                              height: 132,
-                              width: 88,
-                              placeholder: 'assets/images/img_placeholder.png',
-                              image: NetworkConstants.BASE_IMAGE_URL +
-                                  (e.posterPath!))
-                          : Image.asset(
-                              'assets/images/img_placeholder.png',
-                              height: 132,
-                              width: 88,
-                            )),
-                ))
-            .toList() ??
-        [];
-  }
-*/
   Widget _getSeparator(String title) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return Column(children: [

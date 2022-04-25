@@ -18,7 +18,7 @@ class PosterFormatImg extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
               child: FadeInImage.assetNetwork(
-                placeholder: 'assets/images/img_placeholder.png',
+                placeholder: 'assets/images/img_placeholder.jpeg',
                 image: NetworkConstants.BASE_IMAGE_URL + (path!),
                 height: 132,
                 width: 88,
@@ -26,7 +26,7 @@ class PosterFormatImg extends StatelessWidget {
             ),
           )
         : Image.asset(
-            'assets/images/img_placeholder.png',
+            'assets/images/img_placeholder.jpeg',
             height: 132,
             width: 88,
           );

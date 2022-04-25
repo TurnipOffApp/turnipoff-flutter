@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:turnipoff/blocs/Actor/Actor.dart';
 import 'package:turnipoff/widgets/PosterFormatImg.dart';
+import 'package:turnipoff/widgets/PosterImage.dart';
 
-import '../constants/network_constants.dart';
 import '../constants/route_constant.dart';
 import '../main.dart';
 import '../repositories/ActorRepositories.dart';
@@ -256,16 +256,6 @@ class _ActorScreenState extends State<ActorScreen> {
   ClipRRect _getPersonImg(String? path) {
     return ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
-        child: path != null
-            ? FadeInImage.assetNetwork(
-                height: 132,
-                width: 88,
-                placeholder: 'assets/images/img_placeholder.png',
-                image: NetworkConstants.BASE_IMAGE_URL + (path))
-            : Image.asset(
-                'assets/images/img_placeholder.png',
-                height: 132,
-                width: 88,
-              ));
+        child: PosterImage(url: path));
   }
 }
