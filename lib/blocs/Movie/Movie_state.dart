@@ -1,5 +1,5 @@
 
-import 'package:turnipoff/models/MovieCreditsData.dart';
+import 'package:turnipoff/models/CreditsData.dart';
 import 'package:turnipoff/models/MovieData.dart';
 
 abstract class MovieState {}
@@ -16,11 +16,11 @@ class MovieLoaded extends MovieState {
   }
 }
 class MovieCreditsLoaded extends MovieState {
-  MovieCreditsData? data;
+  CreditsData? data;
 
   MovieCreditsLoaded({this.data});
 
-  MovieCreditsLoaded copyWith({MovieCreditsData? data}) {
+  MovieCreditsLoaded copyWith({CreditsData? data}) {
     return MovieCreditsLoaded(data: data ?? this.data);
   }
 }

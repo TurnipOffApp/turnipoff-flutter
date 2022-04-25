@@ -1,11 +1,11 @@
-class MovieCreditsData {
+class CreditsData {
   int? id;
   List<Cast>? cast;
   List<Crew>? crew;
 
-  MovieCreditsData({this.id, this.cast, this.crew});
+  CreditsData({this.id, this.cast, this.crew});
 
-  MovieCreditsData.fromJson(Map<String, dynamic> json) {
+  CreditsData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     if (json['cast'] != null) {
       cast = <Cast>[];
@@ -47,6 +47,9 @@ class Cast {
   String? character;
   String? creditId;
   int? order;
+  String? movieTitle;
+  String? movieImg;
+  double? averageVote;
 
   Cast(
       {this.adult,
@@ -60,7 +63,10 @@ class Cast {
         this.castId,
         this.character,
         this.creditId,
-        this.order});
+        this.order,
+        this.movieTitle,
+        this.movieImg,
+        this.averageVote});
 
   Cast.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
@@ -75,6 +81,9 @@ class Cast {
     character = json['character'];
     creditId = json['credit_id'];
     order = json['order'];
+    movieTitle = json['title'];
+    movieImg = json['poster_path'];
+    averageVote = json['vote_average'];
   }
 
   Map<String, dynamic> toJson() {
@@ -91,6 +100,9 @@ class Cast {
     data['character'] = character;
     data['credit_id'] = creditId;
     data['order'] = order;
+    data['title'] = movieTitle;
+    data['poster_path'] = movieImg;
+    data['vote_average'] = averageVote;
     return data;
   }
 }
@@ -107,6 +119,8 @@ class Crew {
   String? creditId;
   String? department;
   String? job;
+  String? movieTitle;
+  String? movieImg;
 
   Crew(
       {this.adult,
@@ -119,7 +133,9 @@ class Crew {
         this.profilePath,
         this.creditId,
         this.department,
-        this.job});
+        this.job,
+        this.movieTitle,
+        this.movieImg});
 
   Crew.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
@@ -133,6 +149,8 @@ class Crew {
     creditId = json['credit_id'];
     department = json['department'];
     job = json['job'];
+    movieTitle = json['title'];
+    movieImg = json['poster_path'];
   }
 
   Map<String, dynamic> toJson() {
@@ -148,6 +166,8 @@ class Crew {
     data['credit_id'] = creditId;
     data['department'] = department;
     data['job'] = job;
+    data['title'] = movieTitle;
+    data['poster_path'] = movieImg;
     return data;
   }
 }

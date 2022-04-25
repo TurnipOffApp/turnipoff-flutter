@@ -1,5 +1,6 @@
 
 import 'package:turnipoff/models/ActorData.dart';
+import 'package:turnipoff/models/CreditsData.dart';
 
 abstract class ActorState {}
 
@@ -12,6 +13,15 @@ class ActorLoaded extends ActorState {
 
   ActorLoaded copyWith({ActorData? data}) {
     return ActorLoaded(data: data ?? this.data);
+  }
+}
+class ActorCreditsLoaded extends ActorState {
+  CreditsData? data;
+
+  ActorCreditsLoaded({this.data});
+
+  ActorCreditsLoaded copyWith({CreditsData? data}) {
+    return ActorCreditsLoaded(data: data ?? this.data);
   }
 }
 

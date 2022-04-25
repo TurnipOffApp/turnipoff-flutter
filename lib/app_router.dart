@@ -11,9 +11,9 @@ class AppRouter {
       case homeRoute:
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case actor:
-        return MaterialPageRoute(builder: (_) => ActorScreen(id: settings.arguments as String));
+        return MaterialPageRoute(builder: (_) => ActorScreen(actorArgument: settings.arguments as ActorArgument));
       case moviePath:
-        return MaterialPageRoute(builder: (_) => MovieScreen(id: settings.arguments as String));
+        return MaterialPageRoute(builder: (_) => MovieScreen(movieId: settings.arguments as String));
       default:
         return MaterialPageRoute(builder: (_) => const HomeScreen());
     }

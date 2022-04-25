@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:turnipoff/screens/ActorScreen.dart';
 
 import '../blocs/Movie/Movie_bloc.dart';
 import '../blocs/Movie/Movie_event.dart';
@@ -16,8 +17,8 @@ import '../widgets/PosterFormatImg.dart';
 import '../widgets/SeparatorWidget.dart';
 
 class MovieScreen extends StatefulWidget {
-  const MovieScreen({Key? key, required this.id}) : super(key: key);
-  final String id;
+  const MovieScreen({Key? key, required this.movieId}) : super(key: key);
+  final String movieId;
 
   @override
   State<MovieScreen> createState() => _MovieScreenState();
@@ -29,7 +30,8 @@ class _MovieScreenState extends State<MovieScreen> {
     final MovieRepositoryImpl _repo = MovieRepositoryImpl();
     return SafeArea(
       child: BlocProvider(
-        create: (context) => MovieBloc(_repo)..add(LoadMovie(id: widget.id)),
+        create: (context) =>
+            MovieBloc(_repo)..add(LoadMovie(id: widget.movieId)),
         child: BlocBuilder<MovieBloc, MovieState>(
           builder: (context, state) {
             return (state is MovieLoaded)
@@ -59,7 +61,10 @@ class _MovieScreenState extends State<MovieScreen> {
   Stack _buildTopScreenImg(MovieLoaded state) {
     return Stack(
       alignment: Alignment.bottomLeft,
-      children: [backdropImg(state), PosterFormatImg(path: state.data?.posterPath)],
+      children: [
+        backdropImg(state),
+        PosterFormatImg(path: state.data?.posterPath)
+      ],
     );
   }
 
@@ -221,7 +226,9 @@ class _MovieScreenState extends State<MovieScreen> {
     TextTheme textTheme = Theme.of(context).textTheme;
     return GestureDetector(
       onTap: () {
-        navigatorKey.currentState?.pushNamed(actor, arguments: id?.toString());
+        navigatorKey.currentState?.pushNamed(actor,
+            arguments: ActorArgument(
+                actorId: id?.toString() ?? "", movieId: widget.movieId));
       },
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -266,7 +273,6 @@ class _MovieScreenState extends State<MovieScreen> {
               ));
   }
 }
-
 
 extension<T> on List<T> {
   T? get firstOrNull => isEmpty ? null : first;

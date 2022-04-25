@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:turnipoff/constants/network_constants.dart';
 
-import '../models/MovieCreditsData.dart';
+import '../models/CreditsData.dart';
 import '../models/MovieData.dart';
 
 abstract class MovieRepository {
   Future<MovieData> getMovie(String id);
 
-  Future<MovieCreditsData> getMovieCredits(String id);
+  Future<CreditsData> getMovieCredits(String id);
 }
 
 class MovieRepositoryImpl extends MovieRepository {
@@ -30,7 +30,7 @@ class MovieRepositoryImpl extends MovieRepository {
   }
 
   @override
-  Future<MovieCreditsData> getMovieCredits(String id) async {
+  Future<CreditsData> getMovieCredits(String id) async {
     var url = Uri.parse(NetworkConstants.BASE_URL +
         NetworkConstants.MOVIE_PATH +
         id +
@@ -38,6 +38,6 @@ class MovieRepositoryImpl extends MovieRepository {
         API_AND_LANG);
     var response = await http.get(url);
     var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
-    return MovieCreditsData.fromJson(jsonResponse);
+    return CreditsData.fromJson(jsonResponse);
   }
 }

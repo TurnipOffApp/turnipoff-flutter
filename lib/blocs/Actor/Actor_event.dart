@@ -6,4 +6,9 @@ class LoadActor extends ActorEvent {
   LoadActor({required this.id});
 }
 
+class LoadActorCredits extends ActorEvent {
+  String id;
+  LoadActorCredits({required this.id});
+}
+
 class LoadingActorFailed extends ActorEvent {}

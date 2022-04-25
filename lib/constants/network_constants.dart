@@ -1,5 +1,5 @@
 class NetworkConstants {
-  static const BASE_IMAGE_URL = "https://www.themoviedb.org/t/p/w440_and_h660_face/";
+  static const BASE_IMAGE_URL = "https://www.themoviedb.org/t/p/w342/";
   static const LARGE_IMAGE_URL = "https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/";
   static const BASE_URL = "https://api.themoviedb.org/3";
   static const API_KEY_PARAM = "?api_key=";
@@ -10,6 +10,7 @@ class NetworkConstants {
   static const MOVIE_PATH = "/movie/";
   static const MOVIE_CREDITS_PATH = "/credits";
   static const ACTOR_PATH = "/person/";
+  static const ACTOR_CREDITS_PATH = "/movie_credits";
   static const MOVIE_PREVIEW_PATH = "/discover/movie";
   static const TRENDS_PATH = "/trending/";
   static const TRENDS_MOVIE_WEEK_PATH = "/trending/movie/week";
