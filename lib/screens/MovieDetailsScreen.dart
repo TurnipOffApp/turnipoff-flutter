@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -74,13 +75,16 @@ class _MovieScreenState extends State<MovieScreen> {
         ? ClipRRect(
             child: ImageFiltered(
                 imageFilter: ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5),
-                child: FadeInImage.assetNetwork(
+                child: CachedNetworkImage(
                     height: 180,
                     width: MediaQuery.of(context).size.width,
                     fit: BoxFit.fitWidth,
-                    placeholder: 'assets/images/img_placeholder.jpeg',
-                    image: NetworkConstants.LARGE_IMAGE_URL +
-                        (state.data!.backdropPath!))),
+                    placeholder: (context, url) =>
+                        Image.asset('assets/images/img_placeholder.jpeg'),
+                    imageUrl: NetworkConstants.LARGE_IMAGE_URL +
+                        (state.data!.backdropPath!),
+                    fadeOutDuration: const Duration(seconds: 1),
+                    fadeInDuration: const Duration(milliseconds: 200))),
           )
         : Container();
   }
