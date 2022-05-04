@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:turnipoff/blocs/MoviePreview/MoviePreview.dart';
 import 'package:turnipoff/models/MoviePreviewData.dart';
-import 'package:turnipoff/repositories/MovieRepositories.dart';
 import 'package:turnipoff/widgets/CustomLoader.dart';
 import 'package:turnipoff/widgets/PosterImage.dart';
 
@@ -51,7 +48,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget getTrendingMovies() {
     final PageController controller = PageController();
-    final MovieRepositoryImpl _repo = MovieRepositoryImpl();
     return SizedBox(
       height: 200,
       child: BlocProvider(
@@ -89,8 +85,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget getMovies(PreviewType type) {
-    Platform.localeName;
-    Platform.
     return SizedBox(
       height: 120,
       child: BlocProvider(
