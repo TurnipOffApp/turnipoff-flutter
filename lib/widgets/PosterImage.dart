@@ -13,14 +13,16 @@ class PosterImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return url != null
-        ? CachedNetworkImage(
-            height: height,
-            width: width,
-            placeholder: (context, url) =>
-                Image.asset('assets/images/img_placeholder.jpeg'),
-            imageUrl: NetworkConstants.BASE_IMAGE_URL + (url!),
-            fadeOutDuration: const Duration(seconds: 1),
-            fadeInDuration: const Duration(milliseconds: 200))
+        ? Semantics(
+          child: CachedNetworkImage(
+              height: height,
+              width: width,
+              placeholder: (context, url) =>
+                  Image.asset('assets/images/img_placeholder.jpeg'),
+              imageUrl: NetworkConstants.BASE_IMAGE_URL + (url!),
+              fadeOutDuration: const Duration(seconds: 1),
+              fadeInDuration: const Duration(milliseconds: 200)),
+        )
         : Image.asset(
             'assets/images/img_placeholder.jpeg',
             height: height,
