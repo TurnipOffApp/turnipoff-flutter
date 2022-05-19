@@ -62,9 +62,9 @@ class _MovieScreenState extends State<MovieScreen> {
 
   Stack _buildTopScreenImg(MovieLoaded state) {
     return Stack(
-      alignment: Alignment.bottomLeft,
+      alignment: Alignment.center,
       children: [
-        backdropImg(state),
+        //backdropImg(state),
         PosterFormatImg(path: state.data?.posterPath)
       ],
     );

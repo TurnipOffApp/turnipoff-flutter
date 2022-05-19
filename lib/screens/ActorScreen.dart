@@ -51,7 +51,12 @@ class _ActorScreenState extends State<ActorScreen> {
   Widget buildBody(ActorLoaded state) {
     return ListView(
       children: [
-        PosterFormatImg(path: state.data?.profilePath),
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            PosterFormatImg(path: state.data?.profilePath)
+          ],
+        ),
         SeparatorWidget(context: context),
         _buildActorInfo(state),
         SeparatorWidget(context: context),
@@ -223,8 +228,7 @@ class _ActorScreenState extends State<ActorScreen> {
     TextTheme textTheme = Theme.of(context).textTheme;
     return GestureDetector(
       onTap: () {
-        navigatorKey.currentState
-            ?.pushNamed(moviePath, arguments: id);
+        navigatorKey.currentState?.pushNamed(moviePath, arguments: id);
       },
       child: Padding(
         padding: const EdgeInsets.all(16.0),
