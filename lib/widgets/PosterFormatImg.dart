@@ -19,9 +19,9 @@ class PosterFormatImg extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
               child: CachedNetworkImage(
-                  height: 132,
-                  width: 88,
-                  fit: BoxFit.fitWidth,
+                  height: 220,
+                  width: 200,
+                  fit: BoxFit.fitHeight,
                   placeholder: (context, url) =>
                       Image.asset('assets/images/img_placeholder.jpeg'),
                   imageUrl: NetworkConstants.BASE_IMAGE_URL + (path!),

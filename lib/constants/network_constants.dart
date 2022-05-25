@@ -5,7 +5,7 @@ class NetworkConstants {
   static const API_KEY_PARAM = "?api_key=";
   static const API_KEY_VALUE = "100a07b42d270748700af2961af30218";
   static const ADULT_FALSE = "&adult=false";
-  static const LANGUAGE_FR = "&language=fr-FR";
+  static const LANGUAGE_FR = "&language=en-EN";
   static const REGION_FR = "&region=US";
   static const MOVIE_PATH = "/movie/";
   static const MOVIE_CREDITS_PATH = "/credits";

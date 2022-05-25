@@ -136,9 +136,16 @@ class _MovieScreenState extends State<MovieScreen> {
               style: textTheme.displayMedium,
             ),
             Text(
-              (state.data?.releaseDate ?? "") +
-                  " " +
-                  (state.data?.productionCountries?.firstOrNull?.name ?? ""),
+              state.data?.genres?.map((e) => e.name).join(", ") ?? "",
+              textAlign: TextAlign.end,
+              style: textTheme.displaySmall,
+            ),
+            Text(
+              state.data?.releaseDate?.substring(0, 4) ?? "",
+              style: textTheme.displaySmall,
+            ),
+            Text(
+              Duration(minutes: state?.data?.runtime ?? 0).toString().split('.')[0].padLeft(8, '0'),
               style: textTheme.displaySmall,
             ),
           ],
@@ -199,7 +206,7 @@ class _MovieScreenState extends State<MovieScreen> {
 
   SizedBox _getCastList(MovieCreditsLoaded state) {
     return SizedBox(
-      height: 250,
+      height: 220,
       child: ListView(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
@@ -214,7 +221,7 @@ class _MovieScreenState extends State<MovieScreen> {
 
   SizedBox _getCrewList(MovieCreditsLoaded state) {
     return SizedBox(
-      height: 250,
+      height: 220,
       child: ListView(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,

@@ -137,7 +137,7 @@ class _ActorScreenState extends State<ActorScreen> {
       child: Text(
         state.data?.biography ?? "Missing biography",
         textAlign: TextAlign.justify,
-        style: Theme.of(context).textTheme.displaySmall,
+        style: Theme.of(context).textTheme.displayMedium,
       ),
     );
   }

@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget getTrendingMovies() {
     final PageController controller = PageController();
     return SizedBox(
-      height: 200,
+      height: MediaQuery.of(context).size.height * 0.5,
       child: BlocProvider(
         create: (context) => MoviePreviewBloc()
           ..add(MoviePreviewFetched(type: PreviewType.CUSTOM_TRENDS)),
@@ -79,7 +79,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ?.pushNamed(moviePath, arguments: movie.id.toString());
                   },
                   child: PosterImage(
-                      url: movie.posterPath, height: 198, width: 132),
+                      url: movie.posterPath,
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width),
                 )))
             .toList();
   }
