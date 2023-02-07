@@ -1,4 +1,3 @@
-
 abstract class ActorEvent {}
 
 class LoadActor extends ActorEvent {

@@ -1,13 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:turnipoff/blocs/MoviePreview/MoviePreview.dart';
 import 'package:turnipoff/models/MoviePreviewData.dart';
 import 'package:turnipoff/widgets/CustomLoader.dart';
-import 'package:turnipoff/widgets/PosterImage.dart';
+import 'package:turnipoff/widgets/Poster.dart';
+import 'package:turnipoff/widgets/SeparatorWidget.dart';
 
 import '../constants/route_constant.dart';
 import '../main.dart';
+import '../widgets/PosterCarousel.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -19,76 +20,53 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(16),
-      child: ListView(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: _getRows(),
-          )
-        ],
-      ),
-    );
-  }
-
-  List<Widget> _getRows() {
-    return [
-      getTrendingMovies(),
-      _getSeparator("Worst action movies"),
-      getMovies(PreviewType.ACTION),
-      _getSeparator("Worst 90's movies"),
-      getMovies(PreviewType.NINETEES),
-      _getSeparator("Worst 80's movies"),
-      getMovies(PreviewType.EIGHTYS),
-      _getSeparator("Worst comedy movies"),
-      getMovies(PreviewType.COMEDY),
-    ];
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text("TurnipOff Flutter"),
+        ),
+        body: ListView(children: [
+          getTrendingMovies(),
+          const SizedBox(
+            height: 16,
+          ),
+          _getSeparator("Worst action movies"),
+          getMovies(PreviewType.ACTION),
+          const SizedBox(
+            height: 8,
+          ),
+          _getSeparator("Worst 90's movies"),
+          getMovies(PreviewType.NINETEES),
+          _getSeparator("Worst 80's movies"),
+          getMovies(PreviewType.EIGHTYS),
+          _getSeparator("Worst comedy movies"),
+          getMovies(PreviewType.COMEDY),
+        ]));
   }
 
   Widget getTrendingMovies() {
-    final PageController controller = PageController();
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.5,
-      child: BlocProvider(
-        create: (context) => MoviePreviewBloc()
-          ..add(MoviePreviewFetched(type: PreviewType.CUSTOM_TRENDS)),
-        child: BlocBuilder<MoviePreviewBloc, MoviePreviewState>(
-          builder: (context, state) {
-            return (state.status == MoviePreviewStatus.success)
-                ? PageView(
-                    controller: controller,
-                    children: _trends(state),
-                  )
-                : CustomLoader(
-                    color: Theme.of(context).colorScheme.secondary, size: 40);
-          },
-        ),
+    return BlocProvider(
+      create: (context) => MoviePreviewBloc()
+        ..add(const MoviePreviewFetched(type: PreviewType.CUSTOM_TRENDS)),
+      child: BlocBuilder<MoviePreviewBloc, MoviePreviewState>(
+        builder: (context, state) {
+          return (state.status == MoviePreviewStatus.success)
+              ? PosterCarousel(
+                  movies: state.results,
+                  onMovieClicked: (id) => {
+                    navigatorKey.currentState
+                        ?.pushNamed(moviePath, arguments: id)
+                  },
+                )
+              : CustomLoader(
+                  color: Theme.of(context).colorScheme.primary, size: 40);
+        },
       ),
     );
-  }
-
-  List<Center> _trends(MoviePreviewState state) {
-    return state.results
-            .sublist(0, 7)
-            .toList()
-            .map((movie) => Center(
-                    child: GestureDetector(
-                  onTap: () {
-                    navigatorKey.currentState
-                        ?.pushNamed(moviePath, arguments: movie.id.toString());
-                  },
-                  child: PosterImage(
-                      url: movie.posterPath,
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width),
-                )))
-            .toList();
   }
 
   Widget getMovies(PreviewType type) {
     return SizedBox(
-      height: 120,
+      height: 215,
       child: BlocProvider(
         create: (context) =>
             MoviePreviewBloc()..add(MoviePreviewFetched(type: type)),
@@ -127,40 +105,29 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget buildListItem(Results movie) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        padding: const EdgeInsets.all(20),
         child: GestureDetector(
           onTap: () {
             navigatorKey.currentState
                 ?.pushNamed(moviePath, arguments: movie.id.toString());
           },
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: PosterImage(url: movie.posterPath),
-          ),
+          child: Poster(
+              url: movie.posterPath,
+              format: PosterFormat.w154,
+              height: MediaQuery.of(context).size.height / 5),
         ));
   }
 
   Widget _getSeparator(String title) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return Column(children: [
+      SeparatorWidget(context: context),
       const SizedBox(
-        height: 16,
+        height: 12,
       ),
-      SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: 1,
-        child:
-            const DecoratedBox(decoration: BoxDecoration(color: Colors.white)),
-      ),
-      const SizedBox(
-        height: 16,
-      ),
-      Padding(
-        padding: const EdgeInsets.all(4),
-        child: Text(
-          title,
-          style: textTheme.displayMedium,
-        ),
+      Text(
+        title,
+        style: textTheme.titleMedium,
       )
     ]);
   }

@@ -2,13 +2,13 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:turnipoff/blocs/Actor/Actor.dart';
-import 'package:turnipoff/widgets/PosterFormatImg.dart';
-import 'package:turnipoff/widgets/PosterImage.dart';
+import 'package:turnipoff/widgets/Poster.dart';
 
 import '../constants/route_constant.dart';
 import '../main.dart';
 import '../repositories/ActorRepositories.dart';
 import '../widgets/CustomLoader.dart';
+import '../widgets/GenericSection.dart';
 import '../widgets/SeparatorWidget.dart';
 
 class ActorArgument {
@@ -32,8 +32,10 @@ class _ActorScreenState extends State<ActorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: BlocProvider(
+    return Scaffold(
+      appBar: AppBar(
+          title: const Text("Person details"), leading: const BackButton()),
+      body: BlocProvider(
         create: (context) =>
             ActorBloc(_repo)..add(LoadActor(id: widget.actorArgument.actorId)),
         child: BlocBuilder<ActorBloc, ActorState>(
@@ -49,13 +51,15 @@ class _ActorScreenState extends State<ActorScreen> {
   }
 
   Widget buildBody(ActorLoaded state) {
-    return ListView(
+    return SingleChildScrollView(
+        child: Column(
       children: [
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            PosterFormatImg(path: state.data?.profilePath)
-          ],
+        Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Poster(
+              url: state.data?.profilePath,
+              format: PosterFormat.w185,
+              height: MediaQuery.of(context).size.height / 4.2),
         ),
         SeparatorWidget(context: context),
         _buildActorInfo(state),
@@ -64,14 +68,14 @@ class _ActorScreenState extends State<ActorScreen> {
         SeparatorWidget(context: context),
         _buildCastAndCrew(widget.actorArgument.actorId)
       ],
-    );
+    ));
   }
 
   /// Display score, title, releaseDate, and productionCountries
   Widget _buildActorInfo(ActorLoaded state) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      padding: const EdgeInsets.all(12.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -85,20 +89,20 @@ class _ActorScreenState extends State<ActorScreen> {
   /// Display popularity
   Container _buildPopularity(TextTheme textTheme) {
     return Container(
-        width: 60,
-        height: 60,
+        width: 48,
+        height: 48,
         decoration: BoxDecoration(
             border: Border.all(
-              color: Colors.blueGrey,
+              color: Colors.white,
             ),
-            borderRadius: const BorderRadius.all(Radius.circular(60))),
+            borderRadius: const BorderRadius.all(Radius.circular(48))),
         child: Center(
           child: ValueListenableBuilder<String>(
             valueListenable: averageNotifier,
             builder: (context, value, _) {
               return Text(
                 averageNotifier.value,
-                style: textTheme.displayMedium,
+                style: textTheme.titleMedium,
               );
             },
           ),
@@ -107,27 +111,26 @@ class _ActorScreenState extends State<ActorScreen> {
 
   /// Display name, birthday and deathday (if not null)
   Widget _buildLastInfo(ActorLoaded state, TextTheme textTheme) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              state.data?.name ?? "",
-              textAlign: TextAlign.end,
-              style: textTheme.displayMedium,
-            ),
-            Text(
-              (state.data?.birthday ?? "") +
-                  " - " +
-                  (state.data?.deathday ?? "") +
-                  (state.data?.knownForDepartment ?? ""),
-              style: textTheme.displaySmall,
-            ),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text(
+          state.data?.name ?? "",
+          textAlign: TextAlign.end,
+          style: textTheme.titleMedium,
         ),
-      ),
+        Text(
+          (state.data?.birthday ?? "") +
+              " - " +
+              (state.data?.deathday ?? "") +
+              (state.data?.knownForDepartment ?? ""),
+          style: textTheme.labelMedium,
+        ),
+        Text(
+          (state.data?.placeOfBirth ?? ""),
+          style: textTheme.labelMedium,
+        ),
+      ],
     );
   }
 
@@ -137,14 +140,13 @@ class _ActorScreenState extends State<ActorScreen> {
       child: Text(
         state.data?.biography ?? "Missing biography",
         textAlign: TextAlign.justify,
-        style: Theme.of(context).textTheme.displayMedium,
+        style: Theme.of(context).textTheme.labelLarge,
       ),
     );
   }
 
   Widget _buildCastAndCrew(String? id) {
     final _repo = ActorRepositoryImpl();
-    TextTheme textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: BlocProvider(
@@ -152,47 +154,41 @@ class _ActorScreenState extends State<ActorScreen> {
             ActorBloc(_repo)..add(LoadActorCredits(id: id ?? "")),
         child: BlocBuilder<ActorBloc, ActorState>(
           builder: (context, state) {
-            return (state is ActorCreditsLoaded)
-                ? Container(
-                    child: Column(
-                      children: [
-                        Text(
-                          "Cast",
-                          textAlign: TextAlign.start,
-                          style: textTheme.displayMedium
-                              ?.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        _getCastList(state),
-                        Text(
-                          "Crew",
-                          textAlign: TextAlign.start,
-                          style: textTheme.displayMedium
-                              ?.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        _getCrewList(state)
-                      ],
-                    ),
-                  )
-                : CustomLoader(
-                    color: Theme.of(context).colorScheme.secondary, size: 40);
+            if (state is ActorCreditsLoaded) {
+              _notifyAverageListerWhenReady(state);
+              return Column(
+                children: [
+                  GenericSection(
+                      title: "Cast",
+                      items: state.data!.cast!.map((cast) => GenericSectionItem(
+                          id: cast.id,
+                          imagePath: cast.movieImg,
+                          title: cast.movieTitle,
+                          subTitle: cast.character)),
+                      onItemClicked: (item) => {
+                            navigatorKey.currentState?.pushNamed(moviePath,
+                                arguments: item.id.toString())
+                          }),
+                  SeparatorWidget(context: context),
+                  GenericSection(
+                      title: "Crew",
+                      items: state.data!.crew!.map((crew) => GenericSectionItem(
+                          id: crew.id,
+                          imagePath: crew.profilePath,
+                          title: crew.name,
+                          subTitle: crew.job)),
+                      onItemClicked: (item) => {
+                            navigatorKey.currentState?.pushNamed(moviePath,
+                                arguments: item.id.toString())
+                          }),
+                ],
+              );
+            } else {
+              return CustomLoader(
+                  color: Theme.of(context).colorScheme.secondary, size: 40);
+            }
           },
         ),
-      ),
-    );
-  }
-
-  SizedBox _getCastList(ActorCreditsLoaded state) {
-    _notifyAverageListerWhenReady(state);
-    return SizedBox(
-      height: 250,
-      child: ListView(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        children: state.data?.cast
-                ?.map((cast) => _getMovie(cast.id?.toString(), cast.movieImg,
-                    cast.movieTitle, cast.character))
-                .toList() ??
-            [],
       ),
     );
   }
@@ -207,59 +203,5 @@ class _ActorScreenState extends State<ActorScreen> {
               .substring(0, 3) ??
           "...";
     });
-  }
-
-  SizedBox _getCrewList(ActorCreditsLoaded state) {
-    return SizedBox(
-      height: 250,
-      child: ListView(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        children: state.data?.crew
-                ?.map((crew) => _getMovie(crew.id?.toString(), crew.movieImg,
-                    crew.movieTitle, crew.job))
-                .toList() ??
-            [],
-      ),
-    );
-  }
-
-  Widget _getMovie(String? id, String? imgPath, String? name, String? role) {
-    TextTheme textTheme = Theme.of(context).textTheme;
-    return GestureDetector(
-      onTap: () {
-        navigatorKey.currentState?.pushNamed(moviePath, arguments: id);
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SizedBox(
-          width: 88,
-          child: Column(
-            children: [
-              _getPersonImg(imgPath),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: Text(
-                  name ?? "name",
-                  textAlign: TextAlign.center,
-                  style: textTheme.displaySmall,
-                ),
-              ),
-              Text(
-                role ?? "role",
-                textAlign: TextAlign.center,
-                style: textTheme.displaySmall?.copyWith(color: Colors.grey),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  ClipRRect _getPersonImg(String? path) {
-    return ClipRRect(
-        borderRadius: BorderRadius.circular(8.0),
-        child: PosterImage(url: path));
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'constants/route_constant.dart';
 import 'screens/ActorScreen.dart';
 import 'screens/HomeScreen.dart';
-import 'screens/MovieDetailsScreen.dart';
+import 'screens/MovieScreen.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {

@@ -10,14 +10,12 @@ class SeparatorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: SizedBox(
+    final color = Theme.of(context).colorScheme.secondary;
+    return SizedBox(
         width: MediaQuery.of(context).size.width,
         height: 1,
         child:
-        const DecoratedBox(decoration: BoxDecoration(color: Colors.white)),
-      ),
+        DecoratedBox(decoration: BoxDecoration(color: color)),
     );
   }
 }

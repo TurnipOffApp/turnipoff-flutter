@@ -1,14 +1,18 @@
 import 'package:equatable/equatable.dart';
 
 abstract class MoviePreviewEvent extends Equatable {
-  PreviewType type;
-  MoviePreviewEvent({required this.type});
+
+  final PreviewType type;
+
+  const MoviePreviewEvent({required this.type});
+
   @override
   List<Object> get props => [];
+
 }
 
 class MoviePreviewFetched extends MoviePreviewEvent {
-  MoviePreviewFetched({required PreviewType type}) : super(type: type);
+  const MoviePreviewFetched({required PreviewType type}) : super(type: type);
 }
 
 enum PreviewType {

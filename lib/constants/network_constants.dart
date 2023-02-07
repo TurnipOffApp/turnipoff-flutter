@@ -1,6 +1,6 @@
 class NetworkConstants {
-  static const BASE_IMAGE_URL = "https://www.themoviedb.org/t/p/w185/";
-  static const LARGE_IMAGE_URL = "https://www.themoviedb.org/t/p/w780";
+  static const BASE_IMAGE_URL = "https://www.themoviedb.org/t/p";
+  static const LARGE_IMAGE_URL = "https://www.themoviedb.org/t/p";
   static const BASE_URL = "https://api.themoviedb.org/3";
   static const API_KEY_PARAM = "?api_key=";
   static const API_KEY_VALUE = "100a07b42d270748700af2961af30218";

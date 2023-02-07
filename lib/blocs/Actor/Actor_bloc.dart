@@ -5,8 +5,6 @@ import 'package:turnipoff/models/ActorData.dart';
 import 'package:turnipoff/models/CreditsData.dart';
 import 'package:turnipoff/repositories/ActorRepositories.dart';
 
-import '../../models/CreditsData.dart';
-
 class ActorBloc extends Bloc<ActorEvent, ActorState> {
   final ActorRepositoryImpl _ActorRepository;
 
