@@ -50,8 +50,13 @@ class _PosterCarouselState extends State<PosterCarousel>
                     .sublist(0, 7)
                     .toList()
                     .map((movie) => Center(
-                        child: GestureDetector(
-                            onTap: () {
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              foregroundColor: Colors.black,
+                              elevation: 0,
+                            ),
+                            onPressed: () {
                               widget.onMovieClicked(movie.id.toString());
                             },
                             child: Poster(
